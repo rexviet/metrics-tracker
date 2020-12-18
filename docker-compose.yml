@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  api:
+    build: ./
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    env_file: .env
+    tty: true
+    restart: always
+    container_name: metrics_api
+    command:
+      - /bin/bash
+
+  mongodb:
+    image: mongo:latest
+    container_name: 'mongo_metrics'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27018:27017
+    volumes:
+      - ./mongo-data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
