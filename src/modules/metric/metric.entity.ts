@@ -8,6 +8,13 @@ export class Metric extends Document {
     required: true,
     index: true,
     type: String,
+  })
+  userId: string;
+
+  @Prop({
+    required: true,
+    index: true,
+    type: String,
     enum: Object.values(MetricType),
   })
   type: MetricType;
@@ -20,6 +27,7 @@ export class Metric extends Document {
 
   @Prop({
     required: true,
+    index: true,
     type: Date,
   })
   createdAt: Date;
