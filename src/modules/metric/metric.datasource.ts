@@ -48,7 +48,7 @@ export class MetricMongoDS implements IMetricDatasource {
     payload: IGetMetricsPayload,
   ): Promise<IListModels<Metric>> {
     const body = this.buildGetMetricsBody(payload);
-    console.log('body:', body);
+
     const [metrics, count] = await Promise.all([
       this.metricModel
         .find(body)

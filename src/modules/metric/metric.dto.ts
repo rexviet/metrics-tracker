@@ -78,37 +78,15 @@ export class AddTemperatureMetricDto {
   unit: TemperatureUnit;
 }
 
-export class GetMetricsDto {
+export class FormatMetricDto {
   @ApiProperty({
     type: String,
-    example: 'user_1',
-    description: 'User id',
-  })
-  @IsString()
-  @IsDefined()
-  userId: string;
-
-  @ApiProperty({
-    type: String,
-    example: Object.values(MetricType).join('|'),
+    example: Object.values(MetricType).join(' |'),
     description: 'Metric type',
-    required: false,
   })
-  @IsOptional()
+  @IsDefined()
   @IsEnum(MetricType)
-  type?: MetricType;
-
-  @ApiProperty({ example: 1609390800000, required: false })
-  @IsOptional()
-  @IsDate({ message: 'Invalid from' })
-  @Type(() => Date)
-  from?: Date;
-
-  @ApiProperty({ example: 1609390800000, required: false })
-  @IsOptional()
-  @IsDate({ message: 'Invalid from' })
-  @Type(() => Date)
-  to?: Date;
+  type: MetricType;
 
   @ApiProperty({
     type: String,
@@ -120,8 +98,30 @@ export class GetMetricsDto {
     required: false,
   })
   @IsOptional()
-  // @IsEnum(TemperatureUnit)
   formatUnit?: DistanceUnit | TemperatureUnit;
+}
+
+export class GetMetricsDto extends FormatMetricDto {
+  @ApiProperty({
+    type: String,
+    example: 'user_1',
+    description: 'User id',
+  })
+  @IsString()
+  @IsDefined()
+  userId: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsDate({ message: 'Invalid from' })
+  @Type(() => Date)
+  from?: Date;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsDate({ message: 'Invalid from' })
+  @Type(() => Date)
+  to?: Date;
 
   @ApiProperty({
     type: String,
