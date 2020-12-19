@@ -15,8 +15,8 @@ async function bootstrap() {
 
   if (env !== 'production') {
     const options = new DocumentBuilder()
-      .setTitle('VRS')
-      .setDescription(`The VRS API description`)
+      .setTitle('Metrics Tracker')
+      .setDescription(`The Metrics Tracker API description`)
       .setVersion('0.0.1')
       .addBearerAuth()
       .build();
