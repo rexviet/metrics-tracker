@@ -241,7 +241,7 @@ export class GetMetricsPayload implements IGetMetricsPayload {
 
 export interface IGetMetricsViewReq {
   readonly userId: string;
-  readonly type?: MetricType;
+  readonly type: MetricType;
   readonly from?: Date;
   readonly to?: Date;
   readonly formatUnit?: DistanceUnit | TemperatureUnit;
@@ -253,7 +253,7 @@ export interface IGetMetricsViewReq {
 export class GetMetricsViewReq implements IGetMetricsViewReq {
   constructor(
     readonly userId: string,
-    readonly type?: MetricType,
+    readonly type: MetricType,
     readonly from?: Date,
     readonly to?: Date,
     readonly formatUnit?: DistanceUnit | TemperatureUnit,

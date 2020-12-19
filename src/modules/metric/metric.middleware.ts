@@ -9,7 +9,7 @@ export class ValidFormatUnitMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: Function) {
     const query = (req.query as any) as FormatMetricDto;
 
-    let allowedFormatUnits: any[];
+    let allowedFormatUnits: any[] = [];
     switch (query.type) {
       case MetricType.DISTANCE:
         allowedFormatUnits = Object.values(DistanceUnit);

@@ -52,7 +52,7 @@ export class MetricMongoDS implements IMetricDatasource {
     const [metrics, count] = await Promise.all([
       this.metricModel
         .find(body)
-        .sort({ [payload.sortField]: payload.offset })
+        .sort({ [payload.sortField]: payload.order })
         .skip(payload.offset)
         .limit(payload.limit),
       this.metricModel.count(body),

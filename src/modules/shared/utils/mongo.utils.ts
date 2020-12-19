@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export interface IDatabaseConfig {
   readonly dbName: string;
   readonly host: string;
@@ -21,5 +23,9 @@ export class MongoUtils {
     }
 
     return `mongodb://${credential}${config.host}/${config.dbName}`;
+  }
+
+  public static stringToObjectId(id: string): ObjectId {
+    return new ObjectId(id);
   }
 }

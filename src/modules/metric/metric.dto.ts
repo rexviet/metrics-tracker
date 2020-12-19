@@ -33,7 +33,10 @@ export class AddDistanceMetricDto {
   @Min(0)
   value: number;
 
-  @ApiProperty({ example: 1609390800000, required: false })
+  @ApiProperty({
+    example: new Date('2020-12-31').toISOString(),
+    required: false,
+  })
   @IsOptional()
   @IsDate({ message: 'Invalid createdAt' })
   @Type(() => Date)
@@ -111,13 +114,19 @@ export class GetMetricsDto extends FormatMetricDto {
   @IsDefined()
   userId: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    required: false,
+    example: new Date('2020-12-01').toISOString(),
+  })
   @IsOptional()
   @IsDate({ message: 'Invalid from' })
   @Type(() => Date)
   from?: Date;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    required: false,
+    example: new Date('2020-12-31').toISOString(),
+  })
   @IsOptional()
   @IsDate({ message: 'Invalid from' })
   @Type(() => Date)

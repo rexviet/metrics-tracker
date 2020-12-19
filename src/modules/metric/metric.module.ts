@@ -11,6 +11,7 @@ import { MetricController } from './metric.controller';
 import { Metric, MetricSchema } from './metric.entity';
 import { MetricMongoDS } from './metric.datasource';
 import { ValidFormatUnitMiddleware } from './metric.middleware';
+import { MetricProducer } from './metric.producer';
 
 const metricDSProvider = {
   provide: 'IMetricDatasource',
@@ -21,7 +22,12 @@ const metricDSProvider = {
   imports: [
     MongooseModule.forFeature([{ name: Metric.name, schema: MetricSchema }]),
   ],
-  providers: [MetricRepository, MetricService, metricDSProvider],
+  providers: [
+    MetricRepository,
+    MetricService,
+    metricDSProvider,
+    MetricProducer,
+  ],
   exports: [MetricModule, MetricService],
   controllers: [MetricController],
 })

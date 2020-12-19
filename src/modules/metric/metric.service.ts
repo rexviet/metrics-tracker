@@ -71,37 +71,76 @@ export class MetricService {
     );
     const listMetrics = await this.metricRepository.getMetrics(payload);
 
-    let metrics: IMetric[];
-    switch (getMetricsReq.type) {
+    // let metrics: IMetric[];
+    // switch (getMetricsReq.type) {
+    //   case MetricType.DISTANCE:
+    //     metrics = listMetrics.data.map((metric) => {
+    //       return new DistanceMetric(
+    //         metric.id,
+    //         metric.userId,
+    //         metric.value,
+    //         metric.createdAt,
+    //         metric.unit as DistanceUnit,
+    //         getMetricsReq.formatUnit as DistanceUnit,
+    //       );
+    //     });
+    //     break;
+    //   case MetricType.TEMPERATURE:
+    //     metrics = listMetrics.data.map((metric) => {
+    //       return new TemperatureMetric(
+    //         metric.id,
+    //         metric.userId,
+    //         metric.value,
+    //         metric.createdAt,
+    //         metric.unit as TemperatureUnit,
+    //         getMetricsReq.formatUnit as TemperatureUnit,
+    //       );
+    //     });
+    //     break;
+    // }
+    const formatedMetrics = this.formatMetrics(
+      listMetrics.data,
+      getMetricsReq.type,
+      getMetricsReq.formatUnit,
+    );
+    return {
+      data: formatedMetrics,
+      total: listMetrics.total,
+    };
+  }
+
+  public formatMetrics(
+    metrics: IMetric[],
+    metricType: MetricType,
+    formatUnit?: DistanceUnit | TemperatureUnit,
+  ): IMetric[] {
+    let formatedMetrics: IMetric[];
+    switch (metricType) {
       case MetricType.DISTANCE:
-        metrics = listMetrics.data.map((metric) => {
+        formatedMetrics = metrics.map((metric) => {
           return new DistanceMetric(
             metric.id,
             metric.userId,
             metric.value,
             metric.createdAt,
             metric.unit as DistanceUnit,
-            getMetricsReq.formatUnit as DistanceUnit,
+            formatUnit as DistanceUnit,
           );
         });
         break;
       case MetricType.TEMPERATURE:
-        metrics = listMetrics.data.map((metric) => {
+        formatedMetrics = metrics.map((metric) => {
           return new TemperatureMetric(
             metric.id,
             metric.userId,
             metric.value,
             metric.createdAt,
             metric.unit as TemperatureUnit,
-            getMetricsReq.formatUnit as TemperatureUnit,
+            formatUnit as TemperatureUnit,
           );
         });
         break;
     }
-
-    return {
-      data: metrics,
-      total: listMetrics.total,
-    };
+    return formatedMetrics;
   }
 }
