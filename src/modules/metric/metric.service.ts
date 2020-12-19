@@ -70,34 +70,6 @@ export class MetricService {
       getMetricsReq.formatUnit,
     );
     const listMetrics = await this.metricRepository.getMetrics(payload);
-
-    // let metrics: IMetric[];
-    // switch (getMetricsReq.type) {
-    //   case MetricType.DISTANCE:
-    //     metrics = listMetrics.data.map((metric) => {
-    //       return new DistanceMetric(
-    //         metric.id,
-    //         metric.userId,
-    //         metric.value,
-    //         metric.createdAt,
-    //         metric.unit as DistanceUnit,
-    //         getMetricsReq.formatUnit as DistanceUnit,
-    //       );
-    //     });
-    //     break;
-    //   case MetricType.TEMPERATURE:
-    //     metrics = listMetrics.data.map((metric) => {
-    //       return new TemperatureMetric(
-    //         metric.id,
-    //         metric.userId,
-    //         metric.value,
-    //         metric.createdAt,
-    //         metric.unit as TemperatureUnit,
-    //         getMetricsReq.formatUnit as TemperatureUnit,
-    //       );
-    //     });
-    //     break;
-    // }
     const formatedMetrics = this.formatMetrics(
       listMetrics.data,
       getMetricsReq.type,
