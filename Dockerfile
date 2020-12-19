@@ -7,7 +7,7 @@ RUN npm install -g pm2
 WORKDIR /app
 
 COPY src /app/src/
-# COPY .env /app/
+COPY .env /app/
 # COPY .npmrc /app/
 COPY package*.json /app/
 COPY tsconfig*.json /app/
