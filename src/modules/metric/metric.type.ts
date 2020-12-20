@@ -239,12 +239,10 @@ export class GetMetricsPayload implements IGetMetricsPayload {
   ) {}
 }
 
-export interface IGetMetricsViewReq {
+export interface IGetMetricsViewReq extends IValidFormatUnitPayload {
   readonly userId: string;
-  readonly type: MetricType;
   readonly from?: Date;
   readonly to?: Date;
-  readonly formatUnit?: DistanceUnit | TemperatureUnit;
   readonly sortField: MetricSortField;
   readonly order: OrderOptions;
   readonly offset: number;
@@ -262,4 +260,9 @@ export class GetMetricsViewReq implements IGetMetricsViewReq {
     readonly offset: number = DEFAULT_OFFET,
     readonly limit: number = DEFAULT_LIMIT,
   ) {}
+}
+
+export interface IValidFormatUnitPayload {
+  readonly type: MetricType;
+  readonly formatUnit?: DistanceUnit | TemperatureUnit;
 }

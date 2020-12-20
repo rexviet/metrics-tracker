@@ -51,6 +51,50 @@ export class AddDistanceMetricDto {
   unit: DistanceUnit;
 }
 
+export class AddMetricDto {
+  @ApiProperty({
+    type: String,
+    example: 'user_1',
+    description: 'User id',
+  })
+  @IsString()
+  @IsDefined()
+  userId: string;
+
+  @ApiProperty({
+    type: String,
+    example: Object.values(MetricType).join('|'),
+    description: 'Metric type',
+  })
+  @IsEnum(MetricType)
+  type: MetricType;
+
+  @ApiProperty({ type: Number, example: 0 })
+  @IsNumber({}, { message: 'Invalid value' })
+  @Type(() => Number)
+  @Min(0)
+  value: number;
+
+  @ApiProperty({
+    example: new Date('2020-12-31').toISOString(),
+    required: false,
+  })
+  @IsOptional()
+  @IsDate({ message: 'Invalid createdAt' })
+  @Type(() => Date)
+  createdAt: Date;
+
+  @ApiProperty({
+    type: String,
+    example: [
+      ...Object.values(TemperatureUnit),
+      ...Object.values(DistanceUnit),
+    ].join(' | '),
+    description: 'unit',
+  })
+  unit: DistanceUnit | TemperatureUnit;
+}
+
 export class AddTemperatureMetricDto {
   @ApiProperty({
     type: String,

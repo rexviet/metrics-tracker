@@ -11,14 +11,22 @@ import {
   IAddMetricViewReq,
   IGetMetricsViewReq,
   IMetric,
+  IValidFormatUnitPayload,
   TemperatureMetric,
 } from './metric.type';
+import { MetricValidator } from './metric.validator';
 
 @Injectable()
 export class MetricService {
   constructor(private readonly metricRepository: MetricRepository) {}
 
   public async addMetric(addMetricReq: IAddMetricViewReq): Promise<IMetric> {
+    const validFormatUnitPayload: IValidFormatUnitPayload = {
+      type: addMetricReq.type,
+      formatUnit: addMetricReq.unit,
+    };
+    MetricValidator.validFormatUnit(validFormatUnitPayload);
+
     let payload: IAddMetricPayload;
 
     switch (addMetricReq.type) {
@@ -58,6 +66,8 @@ export class MetricService {
   public async getMetrics(
     getMetricsReq: IGetMetricsViewReq,
   ): Promise<IListModels<IMetric>> {
+    MetricValidator.validFormatUnit(getMetricsReq);
+
     const payload = new GetMetricsPayload(
       getMetricsReq.userId,
       getMetricsReq.sortField,

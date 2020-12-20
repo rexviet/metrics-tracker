@@ -11,6 +11,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   AddDistanceMetricDto,
+  AddMetricDto,
   AddTemperatureMetricDto,
   GetMetricsDto,
 } from './metric.dto';
@@ -31,7 +32,7 @@ export class MetricController {
   constructor(private readonly metricService: MetricService) {}
 
   @Post('/distance')
-  @ApiOperation({ summary: 'Add distance metric' })
+  @ApiOperation({ summary: 'API for Distance Sensor add distance metric' })
   public async addDistance(
     @Body() body: AddDistanceMetricDto,
     @Res() res: Response,
@@ -53,7 +54,9 @@ export class MetricController {
   }
 
   @Post('/temperature')
-  @ApiOperation({ summary: 'Add temperature metric' })
+  @ApiOperation({
+    summary: 'API for Temperature Sensor add temperature metric',
+  })
   public async addTemperature(
     @Body() body: AddTemperatureMetricDto,
     @Res() res: Response,
@@ -61,6 +64,25 @@ export class MetricController {
     const addMetricReq = new AddMetricViewReq(
       body.userId,
       MetricType.TEMPERATURE,
+      body.value,
+      body.unit,
+      body.createdAt,
+    );
+    const metric = await this.metricService.addMetric(addMetricReq);
+    const resBody: ISingleRes<MetricViewRes> = {
+      success: true,
+      data: MetricPresenter.formatMetricViewRes(metric),
+    };
+
+    return res.status(HttpStatus.CREATED).send(resBody);
+  }
+
+  @Post('')
+  @ApiOperation({ summary: 'API for user add metric' })
+  public async addMetric(@Body() body: AddMetricDto, @Res() res: Response) {
+    const addMetricReq = new AddMetricViewReq(
+      body.userId,
+      body.type,
       body.value,
       body.unit,
       body.createdAt,

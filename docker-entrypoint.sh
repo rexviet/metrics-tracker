@@ -7,7 +7,6 @@ cat .env
 # npm run migrate:up
 
 ### Start app
-pm2 start dist/main.js -n api -i 1 --log-date-format 'YYYY-MM-DD HH:mm:ss.SSS'
-pm2 logs
+npm start
 
 exec "$@"

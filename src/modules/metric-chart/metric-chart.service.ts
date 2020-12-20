@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { MetricService } from '../metric/metric.service';
 import { IMetric } from '../metric/metric.type';
+import { MetricValidator } from '../metric/metric.validator';
 import { DateUtils } from '../shared/utils/date.utils';
 import { MongoUtils } from '../shared/utils/mongo.utils';
 import { MetricChartRepository } from './metric-chart.repository';
@@ -32,6 +33,7 @@ export class MetricChartService {
   public async getMetricsChart(
     getMetricsChartReq: IGetMetricChartViewReq,
   ): Promise<IMetricChart[]> {
+    MetricValidator.validFormatUnit(getMetricsChartReq);
     const datesArray = DateUtils.getDatesInRange(
       getMetricsChartReq.from,
       getMetricsChartReq.to,

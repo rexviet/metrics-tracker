@@ -4,7 +4,7 @@ import {
   MetricType,
   TemperatureUnit,
 } from '../metric/metric.enum';
-import { IMetric } from '../metric/metric.type';
+import { IMetric, IValidFormatUnitPayload } from '../metric/metric.type';
 
 export interface IUpsertMetricChartPayload {
   readonly metric: ObjectId;
@@ -30,12 +30,10 @@ export interface IMetricChart {
 
 export interface INewMetric extends IMetric {}
 
-export interface IGetMetricChartViewReq {
+export interface IGetMetricChartViewReq extends IValidFormatUnitPayload {
   readonly userId: string;
   readonly from: Date;
   readonly to: Date;
-  readonly type: MetricType;
-  readonly formatUnit?: DistanceUnit | TemperatureUnit;
 }
 export class GetMetricChartViewReq implements IGetMetricChartViewReq {
   constructor(

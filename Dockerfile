@@ -4,20 +4,14 @@ RUN rm -rf /var/lib/apt/lists/* && apt-get update -y
 RUN apt-get install -y telnet vim
 RUN npm install -g pm2
 
+RUN mkdir -p /app
 WORKDIR /app
 
-COPY src /app/src/
-COPY .env /app/
-# COPY .npmrc /app/
-COPY package*.json /app/
-COPY tsconfig*.json /app/
-COPY docker-entrypoint.sh /app/
-
-RUN npm i
-RUN npm audit fix --force
-
-RUN npm run build
-RUN rm -rf src
+# Copy app files into app folder
+COPY . /app
+RUN npm install
+RUN ls -la /app
+VOLUME /app
 
 # Clear old entrypoint
 RUN rm -rf /usr/local/bin/docker-entrypoint.sh
@@ -26,4 +20,4 @@ RUN sed -i -e 's/\r$//' /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && ln -s /usr/local/bin/docker-entrypoint.sh /
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-EXPOSE 8080
+EXPOSE 8082
