@@ -35,39 +35,42 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker-compose up
 ```
 
 ## Test
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+Because of less time, I did not write any test
 ```
 
-## Support
+## API Document
+```bash
+Go to http://<host>:<port>/api to open Swagger Document.
+Default is http://localhost:8082/api 
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Design
+### 1. Requirement
+Build a Metric tracking system that support different Units.
+We want to track the following metrics:
+Distance (Meter, centimeter, inch, feet, yard)
+Temperature (°C, °F, °K)
+User should be able to add new metric with: Date, Value, Unit
+User should be able get a List of all Metrics base on the type ( Distance / Temperature)
+User should be able to get data to draw a chart, which take the latest metric insert for a day, based on the type and specific time period (1 Month, 2 Month)
+If User specific a unit when calling the above APIs, it should also convert the value for them.
+Note: We dont need authentication, just assume user will pass on an userId and use that to group or query.
 
-## Stay in touch
+### 2. High-level design
+We have 3 modules:
+- Metric Module: manage out metrics with POST and GET method. This provides APIs for Distance Sensor to add Distance Metrics, Temperature Sensor to add Temperature Metrics, and general API for User to add Distance/Temperature Metrics.
+- Metric Chart Module: manage metric data to draw chart. It just store the newest metric in a date, base on Metric Type. We have one API to get metrics to draw chart.
+- Shared Module: manage the common resources for the other modules.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 3. Architect Design
+I built a monolith architect, but applying Domain Driven Design and Dependency Injection, it can be splited to microservices easily by spliting module. 
 
-## License
+When read the requirement, i thought about IoT domain, so i used MongoDB to store the Metrics because MongoDB has the large read/write capacity, so it's suitable to receive data continuously from the sensors.
 
-Nest is [MIT licensed](LICENSE).
+I used RabbitMQ as the solution for Capture Data Change (CDC): When a new Metric is added, Metric Module will publish a message to CDC_METRIC topic, and Metric Chart Module has a consumer listen to CHART_CDC_METRIC queue that binded to CDC_METRIC topic, receive the new added Metric and check if it's the newest Metric in date based on type, it will be written to Metric Chart table.
