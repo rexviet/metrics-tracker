@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 cat .env
@@ -7,6 +7,8 @@ cat .env
 # npm run migrate:up
 
 ### Start app
-npm start
+pm2 start ts-node -n api -i 1 --log-date-format 'YYYY-MM-DD HH:mm:ss.SSS' -- -r tsconfig-paths/register src/main.ts
+pm2 logs
+# /bin/bash
 
 exec "$@"
