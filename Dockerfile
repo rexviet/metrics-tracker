@@ -11,7 +11,6 @@ COPY .env /app/
 # COPY .npmrc /app/
 COPY package*.json /app/
 COPY tsconfig*.json /app/
-COPY migrate-mongo-config.js /app/
 COPY docker-entrypoint.sh /app/
 
 RUN npm i
